@@ -38,7 +38,7 @@ export function CounterProvider({ children }: { children: ReactNode }) {
   const [counter, setCounter] = useState<Counter>(DEFAULT_COUNTER);
 
   useEffect(() => {
-    if (history.length > 0) return;
+    if (history.length === 0) return;
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
