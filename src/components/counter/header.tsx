@@ -1,7 +1,8 @@
 "use client";
 
 import { ArrowRightIcon, Redo2Icon, Undo2Icon } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 import { Button } from "../ui/button";
 import {
   Field,
@@ -9,10 +10,29 @@ import {
   FieldDescription,
   FieldLegend,
 } from "../ui/field";
+import { toast } from "../ui/toast";
 import { useCounter } from "./counter-provider";
 
 export default function Header() {
-  const { undo, redo, canRedo, canUndo, date } = useCounter();
+  const { undo, redo, canRedo, canUndo, date, counter } = useCounter();
+  const router = useRouter();
+
+  const handleShowResult = useCallback(() => {
+    const { I, II, III } = counter.total.ED;
+    const edIn = I + II + III;
+    const edOut = Object.values(counter.ED).reduce((sum, val) => sum + val, 0);
+
+    // Warn the user
+    if (edIn !== edOut) {
+      return toast.add({
+        title: "Error!",
+        description: "ED In and Out are not the same.",
+        type: "error",
+      });
+    }
+
+    router.push("/result");
+  }, [counter]);
 
   return (
     <>
@@ -28,18 +48,9 @@ export default function Header() {
               <Redo2Icon /> Redo
             </Button>
           </Field>
-          <Link
-            href={"/result"}
-            onClick={(e) => {
-              if (!canUndo) {
-                return e.preventDefault();
-              }
-            }}
-          >
-            <Button disabled={!canUndo}>
-              Show Result <ArrowRightIcon />
-            </Button>
-          </Link>
+          <Button disabled={!canUndo} onClick={handleShowResult}>
+            Show Result <ArrowRightIcon />
+          </Button>
         </div>
       </FieldContent>
     </>

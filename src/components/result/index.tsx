@@ -18,7 +18,6 @@ import {
   FieldSet,
   FieldTitle,
 } from "../ui/field";
-import { Separator } from "../ui/separator";
 import {
   Table,
   TableBody,
@@ -46,6 +45,11 @@ export default function Result() {
     }
     return { I, II, III, total: I + II + III };
   }, [counter.total]);
+
+  const edOutTotal = useMemo(
+    () => Object.values(counter.ED).reduce((sum, val) => sum + val, 0),
+    [counter.ED],
+  );
 
   return (
     <FieldSet className={"relative w-full max-w-2xl"}>
@@ -147,21 +151,26 @@ export default function Result() {
             </Card>
             <Card className="hidden md:block">
               <CardContent>
-                <div className="flex w-full flex-row items-center gap-4">
-                  <div className="flex flex-1">
-                    <span className={"w-36"}>Dog Bite</span>
-                    <span>{counter.DOG_BITE}</span>
-                  </div>
-                  <Separator orientation="vertical" className={"h-8"} />
-                  <div className="flex flex-1">
-                    <span className={"w-36"}>Please Admit</span>
-                    <span>{counter.ADMIT}</span>
-                  </div>
-                </div>
-                <div className="flex">
-                  <span className={"w-36"}>Brought Death</span>
-                  <span>{counter.BD}</span>
-                </div>
+                <Table>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Dog Bite</TableCell>
+                      <TableCell className="text-right">
+                        {counter.DOG_BITE}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Brought Death</TableCell>
+                      <TableCell className="text-right">{counter.BD}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Please Admit</TableCell>
+                      <TableCell className="text-right">
+                        {counter.ADMIT}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
           </div>
@@ -185,26 +194,37 @@ export default function Result() {
                     </TableRow>
                   ))}
                 </TableBody>
+                <TableFooter>
+                  <TableRow>
+                    <TableHead>Total</TableHead>
+                    <TableHead className="text-end">{edOutTotal}</TableHead>
+                  </TableRow>
+                </TableFooter>
               </Table>
             </CardContent>
           </Card>
           <Card className="md:hidden">
             <CardContent>
-              <div className="flex w-full flex-row items-center gap-4">
-                <div className="flex flex-1">
-                  <span className={"w-36"}>Dog Bite</span>
-                  <span>{counter.DOG_BITE}</span>
-                </div>
-                <Separator orientation="vertical" className={"h-8"} />
-                <div className="flex flex-1">
-                  <span className={"w-36"}>Please Admit</span>
-                  <span>{counter.ADMIT}</span>
-                </div>
-              </div>
-              <div className="flex">
-                <span className={"w-36"}>Brought Death</span>
-                <span>{counter.BD}</span>
-              </div>
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Dog Bite</TableCell>
+                    <TableCell className="text-right">
+                      {counter.DOG_BITE}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Brought Death</TableCell>
+                    <TableCell className="text-right">{counter.BD}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Please Admit</TableCell>
+                    <TableCell className="text-right">
+                      {counter.ADMIT}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </FieldGroup>
