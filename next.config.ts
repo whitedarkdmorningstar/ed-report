@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   reactCompiler: true,
-  output: "export",
   basePath: isProd ? `/${repoName}` : "",
   images: {
     unoptimized: true,
